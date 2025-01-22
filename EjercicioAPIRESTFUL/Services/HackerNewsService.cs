@@ -21,7 +21,7 @@ public class HackerNewsService
     }
 
     //metodo que regresara las mejores n historias que recibe como parametro la n en este caso count
-    public async Task<List<Story>> GetTopStoriesAs(int count)
+    public async Task<List<Story>> GetTopStoriesAsync(int count)
     {
         //obtenemos la lista de los id de las principales historias
         var topStoryIDURL = $"{BaseURL}topstories.json";

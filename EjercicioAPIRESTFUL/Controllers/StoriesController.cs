@@ -18,7 +18,7 @@ public class StoriesController : ControllerBase{
         if(n<=0){
             return BadRequest("The number of stories must be better than 0");
         }
-        var stories= await _hackerNewsService.GetTopStoriesAs(n);
+        var stories= await _hackerNewsService.GetTopStoriesAsync(n);
         return Ok(stories);
     }
 
