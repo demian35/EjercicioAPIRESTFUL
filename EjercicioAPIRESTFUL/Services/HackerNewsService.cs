@@ -26,7 +26,8 @@ public class HackerNewsService{
         var topStoriesTasks=storyIds.Take(count).Select(GetStoryByIdAsync);
         var topStories= await Task.WhenAll(topStoriesTasks);
 
-        //regresamos las historias que son nulas 
+        //filtramos las historias para separar los valores que son nulos de las historias
+        //que no son nulas y las regresamos en orden decreciente de acuerdo a su score
         return topStories
             .Where(s => s != null)
             .OrderByDescending(s => s.Score)
