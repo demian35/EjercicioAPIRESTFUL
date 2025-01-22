@@ -1,0 +1,15 @@
+[
+    {
+      "id": 1,
+      "title": "Primera historia",
+      "content": "Esta es la primera historia de ejemplo.",
+      "author": "Autor 1"
+    },
+    {
+      "id": 2,
+      "title": "Segunda historia",
+      "content": "Esta es la segunda historia de ejemplo.",
+      "author": "Autor 2"
+    }
+  ]
+  
