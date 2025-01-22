@@ -33,5 +33,29 @@ public class HackerNewsService{
             .ToList();
     }
 
+     //metodo que devuelve una historia correpondiente al id que reciba
+    private async Task<Story?> GetStoryByIdAsync(int storyID){
+        //construimos la url para alguna historia en especifico
+        var storyURL=$"{BaseURL}item/{storyID}.json";
+        var response= await _httpClient.GetAsync(storyURL);
+        response.EnsureSuccessStatusCode();
+
+        var storyData= JsonSerializer.Deserialize<JsonElement>(await response.Content.ReadAsStringAsync());
+
+        if(storyData.ValueKind==JsonValueKind.Null) return null;
+
+        //mapeamos los datos JSON a un objeto Story
+        return new Story
+        {
+            Title = storyData.GetProperty("title").GetString(),
+            URI = storyData.TryGetProperty("url", out var uriProp) ? uriProp.GetString() : null,
+            PostedBy = storyData.GetProperty("by").GetString(),
+            Time = DateTimeOffset.FromUnixTimeSeconds(storyData.GetProperty("time").GetInt64()).UtcDateTime,
+            Score = storyData.GetProperty("score").GetInt32(),
+            CommentCount = storyData.GetProperty("descendants").GetInt32()
+        };
+
+    }
+
    
 }
