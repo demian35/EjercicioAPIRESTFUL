@@ -12,5 +12,15 @@ public class StoriesController : ControllerBase{
         _hackerNewsService= hackerNewsService;
     }
 
-    
+    //Metodo que recibe peticiones get para obtener las historias
+    [HttpGet]
+    public async Task<IActionResult> GetTopStories([FromQuery] int n=10){
+        if(n<=0){
+            return BadRequest("The number of stories must be better than 0");
+        }
+        var stories= await _hackerNewsService.GetTopStoriesAs(n);
+        return Ok(stories);
+    }
+
+
 }
