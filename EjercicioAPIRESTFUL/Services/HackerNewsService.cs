@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Extensions.Caching.Memory;
+
 //clase HackerNewsService esta clase nos brindara el servicio de conectarnos al API de Hacker News para 
 //extraer las historias para nuestra API
 public class HackerNewsService
@@ -41,26 +42,6 @@ public class HackerNewsService
             .ToList();
     }
 
-    private async Task<List<Story>> FetchTopStoriesFromApiAsync(int count)
-    {
-        // URL de la API de Hacker News para obtener las IDs de las historias principales
-        var topStoryIdsUrl = "https://hacker-news.firebaseio.com/v0/topstories.json";
-
-        // Realizar la solicitud HTTP GET a la API
-        var response = await _httpClient.GetAsync(topStoryIdsUrl);
-        response.EnsureSuccessStatusCode(); // Verifica si la solicitud fue exitosa
-
-        // Leer la respuesta como un JSON y deserializarla en una lista de IDs de historias
-        var storyIds = JsonSerializer.Deserialize<List<int>>(await response.Content.ReadAsStringAsync());
-
-        // Obtiene las historias completas a partir de los IDs obtenidos
-        var topStoriesTasks = storyIds.Take(count).Select(GetStoryByIdAsync);
-        var topStories = await Task.WhenAll(topStoriesTasks);
-
-        // Filtra historias nulas y las ordena por puntaje (si es necesario)
-        return topStories.Where(s => s != null).OrderByDescending(s => s.Score).ToList();
-    }
-
     //metodo que devuelve una historia correpondiente al id que reciba
     private async Task<Story?> GetStoryByIdAsync(int storyID)
     {
@@ -85,6 +66,28 @@ public class HackerNewsService
         };
 
     }
+
+    private async Task<List<Story>> FetchTopStoriesFromApiAsync(int count)
+    {
+        // URL de la API de Hacker News para obtener las IDs de las historias principales
+        var topStoryIdsUrl = "https://hacker-news.firebaseio.com/v0/topstories.json";
+
+        // Realizar la solicitud HTTP GET a la API
+        var response = await _httpClient.GetAsync(topStoryIdsUrl);
+        response.EnsureSuccessStatusCode(); // Verifica si la solicitud fue exitosa
+
+        // Leer la respuesta como un JSON y deserializarla en una lista de IDs de historias
+        var storyIds = JsonSerializer.Deserialize<List<int>>(await response.Content.ReadAsStringAsync());
+
+        // Obtiene las historias completas a partir de los IDs obtenidos
+        var topStoriesTasks = storyIds.Take(count).Select(GetStoryByIdAsync);
+        var topStories = await Task.WhenAll(topStoriesTasks);
+
+        // Filtra historias nulas y las ordena por puntaje (si es necesario)
+        return topStories.Where(s => s != null).OrderByDescending(s => s.Score).ToList();
+    }
+
+
 
     //metodo para evitar sobrecargar el API de Hacker News 
     //obteniendo las mejores n historias usando un sistema cache
