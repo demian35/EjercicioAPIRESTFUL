@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "vFOSdRfb4lw=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\EM2024007418\\Documents\\NET\\EjercicioAPIRESTFUL\\EjercicioAPIRESTFUL\\EjercicioAPIRESTFUL.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\EM2024007418\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.1\\microsoft.aspnetcore.openapi.9.0.1.nupkg.sha512",
+    "C:\\Users\\EM2024007418\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}
