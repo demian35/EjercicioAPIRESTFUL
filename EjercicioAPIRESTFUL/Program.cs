@@ -1,9 +1,23 @@
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Caching.Memory;
+using System.Net.Http;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddControllers();  // Agregar soporte para controladores de la API
 builder.Services.AddOpenApi();
+
+// Registrar HttpClient para inyección de dependencias
+builder.Services.AddHttpClient<HackerNewsService>();
+
+// Registrar el servicio de memoria para cache
+builder.Services.AddMemoryCache();
+
+// Registrar HackerNewsService
+builder.Services.AddScoped<HackerNewsService>();
 
 var app = builder.Build();
 
@@ -34,7 +48,10 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast");
 
-app.MapControllers(); 
+app.MapControllers();
+
+// Configurar la tubería de solicitudes HTTP
+app.UseAuthorization();
 
 app.Run();
 
